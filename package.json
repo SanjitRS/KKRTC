@@ -1,0 +1,25 @@
+{
+  "name": "nitte-bus-tracker",
+  "version": "1.0.0",
+  "description": "Mobile-first PWA for NITTE college students to track college buses live from their own stop",
+  "scripts": {
+    "seed": "npm --prefix backend run seed",
+    "backend": "npm --prefix backend start",
+    "backend:dev": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend run dev",
+    "simulate": "npm --prefix backend run simulate",
+    "simulate:all": "node backend/scripts/bus_simulator.js --all",
+    "build:frontend": "npm --prefix frontend run build"
+  },
+  "keywords": [
+    "nitte",
+    "bus-tracker",
+    "pwa",
+    "leaflet",
+    "openstreetmap",
+    "gps",
+    "live-tracking"
+  ],
+  "author": "NITTE Transport Automation",
+  "license": "ISC"
+}
