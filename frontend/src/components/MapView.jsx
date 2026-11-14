@@ -58,20 +58,30 @@ export default function MapView({
 
       mapInstanceRef.current = map;
 
+      // Ensure Leaflet recalculates dimensions when container resizes
+      let resizeObserver = null;
+      if (typeof ResizeObserver !== 'undefined' && mapContainerRef.current) {
+        resizeObserver = new ResizeObserver(() => {
+          map.invalidateSize();
+        });
+        resizeObserver.observe(mapContainerRef.current);
+      }
+
       // Handle map tap for coordinate picking
       map.on('click', (e) => {
         if (onMapClick) {
           onMapClick(e.latlng.lat, e.latlng.lng);
         }
       });
-    }
 
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
+      return () => {
+        if (resizeObserver) resizeObserver.disconnect();
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.remove();
+          mapInstanceRef.current = null;
+        }
+      };
+    }
   }, []);
 
   // Update map click handler

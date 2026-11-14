@@ -15,8 +15,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // If no user saved, auto-load demo student for instant out-of-the-box demo
-    if (!user) {
+    // If no user saved or stale route from previous routes, auto-load demo student on Route 19
+    if (!user || user.route_id === 'route-1' || user.route_id === 'route-2' || user.route_id === 'route-3') {
       demoLogin('student');
     } else {
       setLoading(false);

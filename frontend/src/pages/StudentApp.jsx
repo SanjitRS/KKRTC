@@ -6,6 +6,7 @@ import ETABadge from '../components/ETABadge';
 import RouteTimeline from '../components/RouteTimeline';
 import NoticeBanner from '../components/NoticeBanner';
 import NotificationHandler from '../components/NotificationHandler';
+import NammaMetroAnnouncement from '../components/NammaMetroAnnouncement';
 import { Bus, MapPin, ChevronDown, ListFilter, RefreshCw } from 'lucide-react';
 
 export default function StudentApp({ onOpenLogin }) {
@@ -44,9 +45,11 @@ export default function StudentApp({ onOpenLogin }) {
     try {
       const res = await fetch('/api/routes');
       const data = await res.json();
-      if (data.routes) {
+      if (data.routes && data.routes.length > 0) {
         setRoutes(data.routes);
-        if (!selectedRouteId && data.routes.length > 0) {
+        // Ensure selected route is valid; if not in data.routes, switch to first valid route (Route 19)
+        const match = data.routes.find(r => r.id === selectedRouteId);
+        if (!match) {
           setSelectedRouteId(data.routes[0].id);
         }
       }
@@ -84,11 +87,15 @@ export default function StudentApp({ onOpenLogin }) {
       if (rData.route) {
         setRouteDetails(rData);
 
-        // If no stop selected for this route, pick a default stop
-        if (!selectedStopId && rData.stops && rData.stops.length > 0) {
-          const defaultStop = rData.stops[Math.floor(rData.stops.length / 2)] || rData.stops[0];
+        // Ensure selected stop belongs to this route; if not, pick valid stop
+        const stopExists = rData.stops && rData.stops.some(s => s.id === selectedStopId);
+        if (!stopExists && rData.stops && rData.stops.length > 0) {
+          const defaultStop = rData.stops.find(s => s.id === 'stop-r19-4') || rData.stops[0];
           setSelectedStopId(defaultStop.id);
         }
+      } else {
+        // If route not found, re-fetch available routes
+        fetchRoutes();
       }
 
       // 2. Active trip for this route
@@ -319,6 +326,14 @@ export default function StudentApp({ onOpenLogin }) {
           centerOnBus={Boolean(activeTrip?.current_latitude)}
         />
 
+        {/* Namma Metro Station Chime & Bilingual Voice Announcement - Compact Floating Overlay */}
+        <div className="absolute top-3 left-3 right-16 sm:right-auto sm:max-w-sm z-[950]">
+          <NammaMetroAnnouncement
+            nextStop={activeTrip?.nextStop}
+            isApproachingStudentStop={activeTrip?.nextStop?.id === selectedStopId}
+          />
+        </div>
+
         {/* Movable & Collapsible Floating ETA Badge */}
         <div className="absolute left-3 right-3 bottom-3 z-[1000] pointer-events-none max-w-xl mx-auto flex justify-center">
           <div className="pointer-events-auto w-full">
@@ -335,14 +350,34 @@ export default function StudentApp({ onOpenLogin }) {
       </div>
 
       {/* Expandable Route Timeline Section */}
-      <div className="bg-slate-900 border-t border-slate-800 p-3 max-h-56 overflow-y-auto">
-        <RouteTimeline
-          stops={enrichedStops}
-          trip={activeTrip}
-          selectedStopId={selectedStopId}
-          direction={direction}
-          onSelectStop={(s) => handleSelectBoardingStop(s)}
-        />
+      <div className="bg-slate-900 border-t border-slate-800 transition-all">
+        <div className="flex items-center justify-between px-3 py-1.5 bg-slate-800/60 border-b border-slate-800">
+          <span className="text-xs font-bold text-slate-300 flex items-center space-x-1.5">
+            <span>Route 19 Timeline</span>
+            <span className="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded-full font-semibold">
+              {enrichedStops.length} Stops
+            </span>
+          </span>
+          <button
+            onClick={() => setShowTimeline(prev => !prev)}
+            className="text-[11px] font-bold text-blue-400 hover:text-blue-300 flex items-center space-x-1 py-0.5 px-2 rounded-lg hover:bg-slate-700/60 transition"
+          >
+            <span>{showTimeline ? 'Hide Timeline' : 'View All Stops'}</span>
+            <ChevronDown className={`w-3.5 h-3.5 transform transition-transform ${showTimeline ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+
+        {showTimeline && (
+          <div className="p-3 max-h-52 overflow-y-auto">
+            <RouteTimeline
+              stops={enrichedStops}
+              trip={activeTrip}
+              selectedStopId={selectedStopId}
+              direction={direction}
+              onSelectStop={(s) => handleSelectBoardingStop(s)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
