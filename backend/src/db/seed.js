@@ -44,71 +44,71 @@ async function seed() {
       id: 'stop-r19-1',
       name: 'Attur Layout',
       landmark: 'Attur Layout Bus Stop, Yelahanka',
-      latitude: 13.0994,
-      longitude: 77.5680
+      latitude: 13.09945,
+      longitude: 77.56803
     },
     {
       id: 'stop-r19-2',
       name: 'Yelahanka 5th Phase',
       landmark: '5th Phase, Yelahanka New Town',
-      latitude: 13.1042,
-      longitude: 77.5715
+      latitude: 13.10703,
+      longitude: 77.57580
     },
     {
       id: 'stop-r19-3',
       name: '4th Phase',
-      landmark: '4th Phase, Yelahanka New Town',
-      latitude: 13.1025,
-      longitude: 77.5762
+      landmark: '4th Phase, Oil Mill Road, YNT',
+      latitude: 13.10369,
+      longitude: 77.57699
     },
     {
       id: 'stop-r19-4',
       name: 'Dairy Circle',
-      landmark: 'Mother Dairy Circle, Yelahanka',
-      latitude: 13.1063,
-      longitude: 77.5776
+      landmark: 'Mother Dairy Circle / Main Gate, YNT',
+      latitude: 13.09953,
+      longitude: 77.57687
     },
     {
       id: 'stop-r19-5',
       name: 'New Town',
-      landmark: 'Yelahanka New Town Bus Stand',
-      latitude: 13.1005,
-      longitude: 77.5815
+      landmark: 'Yelahanka New Town Bus Station',
+      latitude: 13.09565,
+      longitude: 77.57904
     },
     {
       id: 'stop-r19-6',
       name: 'Chikkabommasandra',
       landmark: 'Chikkabommasandra Cross / Bus Stop',
-      latitude: 13.0938,
-      longitude: 77.5825
+      latitude: 13.09375,
+      longitude: 77.58247
     },
     {
       id: 'stop-r19-7',
       name: 'Sharavathi',
-      landmark: 'Sharavathi Hotel / 16th B Cross',
-      latitude: 13.0985,
-      longitude: 77.5855
+      landmark: 'Sharavathi Hotel, 1st A Main Road',
+      latitude: 13.09764,
+      longitude: 77.58424
     },
     {
       id: 'stop-r19-8',
       name: 'Seshadripuram College',
       landmark: 'Seshadripuram First Grade College (SFGC)',
-      latitude: 13.1030,
-      longitude: 77.5870
+      latitude: 13.09983,
+      longitude: 77.58797
     },
     {
       id: 'stop-r19-9',
       name: 'NES',
       landmark: 'NES Bus Stop / Yelahanka Police Station',
-      latitude: 13.1007,
-      longitude: 77.5963
+      latitude: 13.09776,
+      longitude: 77.59182
     },
     {
       id: 'stop-r19-10',
       name: 'Venkatala',
       landmark: 'Venkatala Bus Stop, NH 44 (Bellary Road)',
-      latitude: 13.1138,
-      longitude: 77.6023
+      latitude: 13.11221,
+      longitude: 77.60265
     },
     {
       id: 'stop-nmit-campus',
