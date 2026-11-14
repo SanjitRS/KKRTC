@@ -118,11 +118,14 @@ export default function StudentApp({ onOpenLogin }) {
   // Handle incoming live telemetry over Socket.IO
   useEffect(() => {
     if (!lastTelemetry) return;
-    if (lastTelemetry.route?.id === selectedRouteId || lastTelemetry.bus?.route_id === selectedRouteId) {
+    if (lastTelemetry.route?.id === selectedRouteId || lastTelemetry.bus?.route_id === selectedRouteId || !selectedRouteId) {
       setActiveTrip(prev => ({
         ...prev,
         ...lastTelemetry,
         id: lastTelemetry.tripId,
+        bus_id: lastTelemetry.busId || 'bus-19',
+        bus_number: lastTelemetry.bus?.bus_number || prev?.bus_number || 'Bus 19',
+        registration_number: lastTelemetry.bus?.registration_number || prev?.registration_number || 'KA-50-F-1919',
         current_latitude: lastTelemetry.latitude,
         current_longitude: lastTelemetry.longitude,
         current_speed: lastTelemetry.speed,
@@ -222,8 +225,22 @@ export default function StudentApp({ onOpenLogin }) {
     };
   });
 
-  // Active buses on this route for Map
-  const activeBuses = activeTrip ? [activeTrip] : (routeDetails?.buses || []);
+  // Active buses on this route for Map (ensures persistent bus marker with valid lat/lng)
+  const activeBuses = [];
+  if (activeTrip && activeTrip.current_latitude && activeTrip.current_longitude) {
+    activeBuses.push({
+      ...activeTrip,
+      id: activeTrip.bus_id || 'bus-19',
+      bus_number: activeTrip.bus_number || 'Bus 19',
+      registration_number: activeTrip.registration_number || 'KA-50-F-1919'
+    });
+  } else if (routeDetails?.buses) {
+    routeDetails.buses.forEach(b => {
+      if (b.current_latitude && b.current_longitude) {
+        activeBuses.push(b);
+      }
+    });
+  }
 
   return (
     <div className="flex flex-col h-[calc(100vh-57px)] max-w-7xl mx-auto w-full relative">

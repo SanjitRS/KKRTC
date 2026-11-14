@@ -166,7 +166,8 @@ class RoadBusSimulatorAgent {
       return;
     }
 
-    // Step every 2.5 seconds along the road
+    // Send first location immediately and then step every 2.5 seconds along the road
+    this.step();
     this.timer = setInterval(() => this.step(), 2500);
   }
 
@@ -205,8 +206,13 @@ class RoadBusSimulatorAgent {
     // Advance along the road points
     // Advance by 3 points so speed represents ~35-45 km/h along the fine-grained road points
     this.currentIndex += 3;
-    if (this.currentIndex >= this.waypoints.length && this.waypoints.length > 0) {
-      this.currentIndex = this.waypoints.length - 1;
+    if (this.currentIndex >= this.waypoints.length) {
+      // Reached terminus, reverse direction
+      console.log(`[SIM] 🏁 ${this.bus.bus_number} reached terminus! Switching direction (${this.direction === 'morning' ? 'evening' : 'morning'})...`);
+      this.direction = this.direction === 'morning' ? 'evening' : 'morning';
+      const reversedPoints = [...this.roadGeometry].reverse();
+      this.waypoints = generateRoadWaypoints(reversedPoints, this.stops);
+      this.currentIndex = 0;
     }
   }
 

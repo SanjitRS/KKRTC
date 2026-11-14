@@ -37,9 +37,31 @@ function clearRouteStopsCache(routeId = null) {
  * Handle incoming location update from a driver (or simulator)
  */
 async function processLocationUpdate({ tripId, busId, latitude, longitude, speed = 0, heading = 0, timestamp = null }) {
-  const trip = await get('SELECT * FROM trips WHERE id = ?', [tripId]);
+  let trip = tripId ? await get('SELECT * FROM trips WHERE id = ?', [tripId]) : null;
+  if (!trip && busId) {
+    trip = await get(
+      `SELECT * FROM trips WHERE bus_id = ? AND status != 'arrived' ORDER BY start_time DESC LIMIT 1`,
+      [busId]
+    );
+  }
+
+  // If still no trip, auto-start a trip for this bus
+  if (!trip && busId) {
+    const bus = await get('SELECT * FROM buses WHERE id = ?', [busId]);
+    if (bus && bus.route_id) {
+      const newTripId = `trip-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+      const now = new Date().toISOString();
+      await query(
+        `INSERT INTO trips (id, bus_id, route_id, driver_id, direction, status, start_time, last_ping_time)
+         VALUES (?, ?, ?, ?, 'morning', 'on_the_way', ?, ?)`,
+        [newTripId, bus.id, bus.route_id, bus.driver_id || 'user-drv-1', now, now]
+      );
+      trip = await get('SELECT * FROM trips WHERE id = ?', [newTripId]);
+    }
+  }
+
   if (!trip) {
-    console.warn(`[TRACKING] Location update ignored: Trip ${tripId} not found`);
+    console.warn(`[TRACKING] Location update ignored: Trip ${tripId} or Bus ${busId} not found`);
     return null;
   }
 
@@ -90,7 +112,7 @@ async function processLocationUpdate({ tripId, busId, latitude, longitude, speed
       nextStopEtaMinutes,
       nowIso,
       newStatus,
-      tripId
+      trip.id
     ]
   );
 
@@ -99,7 +121,7 @@ async function processLocationUpdate({ tripId, busId, latitude, longitude, speed
   await query(
     `INSERT INTO location_updates (id, trip_id, bus_id, latitude, longitude, speed, heading, timestamp)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [locId, tripId, busId, latitude, longitude, speed, calculatedHeading, nowIso]
+    [locId, trip.id, busId, latitude, longitude, speed, calculatedHeading, nowIso]
   );
 
   // Fetch bus and route info for enriched broadcast
@@ -107,7 +129,7 @@ async function processLocationUpdate({ tripId, busId, latitude, longitude, speed
   const route = await get('SELECT id, name, code, color FROM routes WHERE id = ?', [trip.route_id]);
 
   const telemetryPayload = {
-    tripId,
+    tripId: trip.id,
     busId,
     bus,
     route,
