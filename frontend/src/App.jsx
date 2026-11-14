@@ -4,9 +4,8 @@ import { SocketProvider } from './context/SocketContext';
 import Navbar from './components/Navbar';
 import StudentApp from './pages/StudentApp';
 import DriverApp from './pages/DriverApp';
-import AdminPanel from './pages/AdminPanel';
 import LoginModal from './pages/LoginModal';
-import { User, Navigation, Shield, Download, X } from 'lucide-react';
+import { User, Navigation, Download, X } from 'lucide-react';
 
 function MainLayout() {
   const { role, user } = useAuth();
@@ -81,12 +80,11 @@ function MainLayout() {
       <main className="flex-1 pb-16 sm:pb-0">
         {activeTab === 'student' && <StudentApp onOpenLogin={() => setShowLoginModal(true)} />}
         {activeTab === 'driver' && <DriverApp />}
-        {activeTab === 'admin' && <AdminPanel />}
       </main>
 
       {/* Mobile Bottom Navigation Bar (Standard App Navigation) */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 sm:hidden">
-        <div className="grid grid-cols-3 h-14">
+        <div className="grid grid-cols-2 h-14">
           <button
             onClick={() => setActiveTab('student')}
             className={`flex flex-col items-center justify-center space-y-1 transition ${
@@ -105,16 +103,6 @@ function MainLayout() {
           >
             <Navigation className="w-5 h-5" />
             <span className="text-[10px]">Driver</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('admin')}
-            className={`flex flex-col items-center justify-center space-y-1 transition ${
-              activeTab === 'admin' ? 'text-purple-400 font-bold' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Shield className="w-5 h-5" />
-            <span className="text-[10px]">Transport Office</span>
           </button>
         </div>
       </nav>

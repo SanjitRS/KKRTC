@@ -126,32 +126,23 @@ export default function LoginModal({ isOpen, onClose, onRoleSelect }) {
             <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
               ⚡ One-Click Instant Demo Login:
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => handleDemoSelect('student', 'user-stu-1')}
-                className="p-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-[11px] font-bold text-center transition active:scale-95"
+                className="p-2.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-bold text-center transition active:scale-95"
               >
                 🎓 Student
-                <span className="block text-[9px] text-slate-400 font-normal">Sanjit R S</span>
+                <span className="block text-[10px] text-slate-400 font-normal">Sanjit R S</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleDemoSelect('driver', 'user-drv-1')}
-                className="p-2 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-[11px] font-bold text-center transition active:scale-95"
+                className="p-2.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs font-bold text-center transition active:scale-95"
               >
                 🚍 Driver
-                <span className="block text-[9px] text-slate-400 font-normal">Ramesh (B-01)</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoSelect('admin', 'user-admin-1')}
-                className="p-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-[11px] font-bold text-center transition active:scale-95"
-              >
-                🛡️ Admin
-                <span className="block text-[9px] text-slate-400 font-normal">Transport Head</span>
+                <span className="block text-[10px] text-slate-400 font-normal">Ramesh (Bus 19)</span>
               </button>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
-import { Bus, Wifi, WifiOff, User, Shield, Navigation, LogOut, ChevronDown } from 'lucide-react';
+import { Bus, Wifi, WifiOff, User, Navigation, LogOut, ChevronDown } from 'lucide-react';
 
 export default function Navbar({ onOpenLogin, activeTab, setActiveTab }) {
   const { user, role, demoLogin, logout } = useAuth();
@@ -75,22 +75,6 @@ export default function Navbar({ onOpenLogin, activeTab, setActiveTab }) {
           >
             <Navigation className="w-3.5 h-3.5" />
             <span className="hidden xs:inline">Driver</span>
-          </button>
-
-          <button
-            onClick={() => {
-              if (role !== 'admin') demoLogin('admin');
-              if (setActiveTab) setActiveTab('admin');
-            }}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all flex items-center space-x-1 ${
-              role === 'admin'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-            title="Switch to Admin view"
-          >
-            <Shield className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">Admin</span>
           </button>
         </div>
 
