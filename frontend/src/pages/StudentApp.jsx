@@ -6,7 +6,6 @@ import ETABadge from '../components/ETABadge';
 import RouteTimeline from '../components/RouteTimeline';
 import NoticeBanner from '../components/NoticeBanner';
 import NotificationHandler from '../components/NotificationHandler';
-import NammaMetroAnnouncement from '../components/NammaMetroAnnouncement';
 import { Bus, MapPin, ChevronDown, ListFilter, RefreshCw } from 'lucide-react';
 
 export default function StudentApp({ onOpenLogin }) {
@@ -325,14 +324,6 @@ export default function StudentApp({ onOpenLogin }) {
           routeColor={currentRoute?.color || '#2563EB'}
           centerOnBus={Boolean(activeTrip?.current_latitude)}
         />
-
-        {/* Namma Metro Station Chime & Bilingual Voice Announcement - Compact Floating Overlay */}
-        <div className="absolute top-3 left-3 right-16 sm:right-auto sm:max-w-sm z-[950]">
-          <NammaMetroAnnouncement
-            nextStop={activeTrip?.nextStop}
-            isApproachingStudentStop={activeTrip?.nextStop?.id === selectedStopId}
-          />
-        </div>
 
         {/* Movable & Collapsible Floating ETA Badge */}
         <div className="absolute left-3 right-3 bottom-3 z-[1000] pointer-events-none max-w-xl mx-auto flex justify-center">

@@ -89,16 +89,18 @@ export default function RouteTimeline({
                     {stop.name}
                   </span>
 
-                  {isMyStop && (
-                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 flex-shrink-0">
-                      My Stop
-                    </span>
-                  )}
-                  {isApproaching && !isPassed && (
-                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 animate-pulse flex-shrink-0">
-                      Next Stop
-                    </span>
-                  )}
+                  <div className="flex items-center space-x-1.5 flex-shrink-0">
+                    {isMyStop && (
+                      <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 flex-shrink-0">
+                        My Stop
+                      </span>
+                    )}
+                    {isApproaching && !isPassed && (
+                      <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 animate-pulse flex-shrink-0">
+                        Next Stop
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {stop.landmark && (
