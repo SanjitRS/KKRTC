@@ -13,8 +13,8 @@ export default function StudentApp({ onOpenLogin }) {
   const { socket, joinRoute, leaveRoute, lastTelemetry, latestAnnouncement } = useSocket();
 
   const [routes, setRoutes] = useState([]);
-  const [selectedRouteId, setSelectedRouteId] = useState(user?.route_id || 'route-1');
-  const [selectedStopId, setSelectedStopId] = useState(user?.stop_id || 'stop-r1-7');
+  const [selectedRouteId, setSelectedRouteId] = useState(user?.route_id || 'route-19');
+  const [selectedStopId, setSelectedStopId] = useState(user?.stop_id || 'stop-r19-8');
   const [direction, setDirection] = useState('morning'); // 'morning' | 'evening'
 
   const [routeDetails, setRouteDetails] = useState(null);

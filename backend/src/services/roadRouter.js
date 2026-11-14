@@ -4,8 +4,22 @@
  */
 
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 const roadGeometryCache = new Map();
+
+// Pre-load disk cache for Route 19 if present
+const diskCachePath = path.join(__dirname, '../../data/route19_geometry.json');
+let diskCachedRoute19 = null;
+try {
+  if (fs.existsSync(diskCachePath)) {
+    diskCachedRoute19 = JSON.parse(fs.readFileSync(diskCachePath, 'utf8'));
+    console.log(`[ROUTER] Pre-loaded ${diskCachedRoute19.length} road coordinates from disk cache.`);
+  }
+} catch (e) {
+  console.warn('[ROUTER] Could not read disk cache:', e.message);
+}
 
 /**
  * Fetch true road polyline from OSRM for a list of coordinates
@@ -61,6 +75,12 @@ async function fetchRoadGeometry(stops) {
     }
   } catch (err) {
     console.warn('[ROUTER] OSRM fetch failed, falling back to segment points:', err.message);
+  }
+
+  // If disk cache for Route 19 exists, use it as immediate cache or fallback
+  if (diskCachedRoute19 && diskCachedRoute19.length > 0 && stops.length >= 10) {
+    roadGeometryCache.set(cacheKey, diskCachedRoute19);
+    return diskCachedRoute19;
   }
 
   // Fallback: return direct stop coordinates
